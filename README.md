@@ -2,7 +2,16 @@ ratelimitr
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/tarakc02/ratelimitr.svg?branch=master)](https://travis-ci.org/tarakc02/ratelimitr)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ratelimitr)](https://cran.r-project.org/package=ratelimitr) [![Travis-CI Build Status](https://travis-ci.org/tarakc02/ratelimitr.svg?branch=master)](https://travis-ci.org/tarakc02/ratelimitr) [![Coverage Status](https://img.shields.io/codecov/c/github/tarakc02/ratelimitr/master.svg)](https://codecov.io/github/tarakc02/ratelimitr?branch=master)
+
+Installation
+------------
+
+This package is available on CRAN. To install:
+
+``` r
+install.packages("ratelimitr")
+```
 
 Introduction
 ------------
@@ -24,7 +33,7 @@ system.time(replicate(11, f()))
 # time with limiting
 system.time(replicate(11, f_lim()))
 #>    user  system elapsed 
-#>   0.002   0.004   1.024
+#>   0.015   0.000   1.032
 ```
 
 Multiple rates
@@ -50,17 +59,17 @@ Sys.sleep(1)
 # 11 function calls do trigger the rate limit
 system.time(replicate(11, f_lim())); Sys.sleep(1)
 #>    user  system elapsed 
-#>   0.011   0.000   0.128
+#>   0.013   0.000   0.129
 
 # similarly, 50 calls don't trigger the second rate limit
 system.time(replicate(50, f_lim())); Sys.sleep(1)
 #>    user  system elapsed 
-#>   0.052   0.004   0.525
+#>   0.055   0.003   0.526
 
 # but 51 calls do:
 system.time(replicate(51, f_lim())); Sys.sleep(1)
 #>    user  system elapsed 
-#>   0.086   0.000   1.025
+#>   0.085   0.000   1.020
 ```
 
 Multiple functions sharing one (or more) rate limit(s)
@@ -101,7 +110,7 @@ system.time(
     {limited$f(); limited$g(); limited$h(); limited$f()}
 )
 #>    user  system elapsed 
-#>   0.010   0.000   1.027
+#>   0.003   0.000   1.021
 ```
 
 Limitations
@@ -110,12 +119,3 @@ Limitations
 `limit_rate` is not safe to use in parallel.
 
 The precision with which you can measure the length of time that has elapsed between two events is constrained to some degree, dependent on your operating system. In order to guarantee compliance with rate limits, this package truncates the time (specifically taking the ceiling or the floor based on which would give the most conservative estimate of elapsed time), rounding to the fraction specified in the `precision` argument of `token_dispenser` -- the default is 60, meaning time measurements are taken up to the 1/60th of a second. While the conservative measurements of elapsed time make it impossible to overrun the rate limit by a tiny fraction of a second (see [Issue 3](https://github.com/tarakc02/ratelimitr/issues/3)), they also will result in waiting times that are slightly longer than necessary (using the default `precision` of 60, waiting times will be .01-.03 seconds longer than necessary).
-
-Installation
-------------
-
-This package is not yet on CRAN. Install from github using devtools:
-
-``` r
-devtools::install_github("tarakc02/ratelimitr")
-```

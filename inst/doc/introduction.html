@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tarak Shah" />
 
-<meta name="date" content="2016-12-19" />
+<meta name="date" content="2016-12-20" />
 
 <title>Introduction to ratelimitr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to ratelimitr</h1>
 <h4 class="author"><em>Tarak Shah</em></h4>
-<h4 class="date"><em>2016-12-19</em></h4>
+<h4 class="date"><em>2016-12-20</em></h4>
 
 
 <div id="TOC">
@@ -97,7 +97,7 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># time with limiting</span>
 <span class="kw">system.time</span>(<span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.007   0.000   1.025</code></pre>
+##    0.00    0.00    1.06</code></pre>
 </div>
 <div id="multiple-rates" class="section level2">
 <h2>Multiple rates</h2>
@@ -111,23 +111,23 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <span class="co"># 10 calls do not trigger the rate limit</span>
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">10</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.005   0.000   0.004</code></pre>
+##    0.02    0.00    0.02</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># note that reset does not modify its argument, but returns a new</span>
 <span class="co"># rate-limited function with a fresh timer</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.018   0.000   0.134</code></pre>
+##    0.00    0.00    0.12</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># similarly, 50 calls don't trigger the second rate limit</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">50</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.062   0.007   0.538</code></pre>
+##    0.05    0.02    0.56</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># but 51 calls do:</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">51</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.096   0.000   1.031</code></pre>
+##    0.05    0.00    1.03</code></pre>
 </div>
 <div id="multiple-functions-sharing-one-or-more-rate-limits" class="section level2">
 <h2>Multiple functions sharing one (or more) rate limit(s)</h2>
@@ -153,7 +153,7 @@ limited$<span class="kw">f</span>()</code></pre></div>
     {limited$<span class="kw">f</span>(); limited$<span class="kw">g</span>(); limited$<span class="kw">h</span>()}
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.001   0.000   0.000</code></pre>
+##       0       0       0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">limited &lt;-<span class="st"> </span><span class="kw">reset</span>(limited)
 
 <span class="co"># but to evaluate a fourth function call, there will be a delay</span>
@@ -164,7 +164,7 @@ limited$<span class="kw">f</span>()</code></pre></div>
     limited$<span class="kw">f</span>()
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.004   0.000   1.023</code></pre>
+##    0.00    0.00    1.04</code></pre>
 </div>
 
 
