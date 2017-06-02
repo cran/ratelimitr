@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tarak Shah" />
 
-<meta name="date" content="2016-12-20" />
+<meta name="date" content="2017-06-01" />
 
 <title>Introduction to ratelimitr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to ratelimitr</h1>
 <h4 class="author"><em>Tarak Shah</em></h4>
-<h4 class="date"><em>2016-12-20</em></h4>
+<h4 class="date"><em>2017-06-01</em></h4>
 
 
 <div id="TOC">
@@ -93,11 +93,11 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <span class="co"># time without limiting</span>
 <span class="kw">system.time</span>(<span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f</span>()))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##       0       0       0</code></pre>
+##    0.01    0.00    0.02</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># time with limiting</span>
 <span class="kw">system.time</span>(<span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.00    0.00    1.06</code></pre>
+##    0.01    0.00    1.06</code></pre>
 </div>
 <div id="multiple-rates" class="section level2">
 <h2>Multiple rates</h2>
@@ -111,23 +111,23 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <span class="co"># 10 calls do not trigger the rate limit</span>
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">10</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.02    0.00    0.02</code></pre>
+##       0       0       0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># note that reset does not modify its argument, but returns a new</span>
 <span class="co"># rate-limited function with a fresh timer</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.00    0.00    0.12</code></pre>
+##    0.00    0.00    0.14</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># similarly, 50 calls don't trigger the second rate limit</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">50</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.05    0.02    0.56</code></pre>
+##    0.02    0.00    0.55</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># but 51 calls do:</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">51</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.05    0.00    1.03</code></pre>
+##    0.00    0.00    1.04</code></pre>
 </div>
 <div id="multiple-functions-sharing-one-or-more-rate-limits" class="section level2">
 <h2>Multiple functions sharing one (or more) rate limit(s)</h2>
@@ -164,7 +164,7 @@ limited$<span class="kw">f</span>()</code></pre></div>
     limited$<span class="kw">f</span>()
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.00    0.00    1.04</code></pre>
+##    0.01    0.00    1.03</code></pre>
 </div>
 
 
@@ -174,7 +174,7 @@ limited$<span class="kw">f</span>()</code></pre></div>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
