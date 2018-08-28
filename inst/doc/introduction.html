@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tarak Shah" />
 
-<meta name="date" content="2017-06-01" />
+<meta name="date" content="2018-08-28" />
 
 <title>Introduction to ratelimitr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to ratelimitr</h1>
 <h4 class="author"><em>Tarak Shah</em></h4>
-<h4 class="date"><em>2017-06-01</em></h4>
+<h4 class="date"><em>2018-08-28</em></h4>
 
 
 <div id="TOC">
@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>The basics</h2>
 <p>Use ratelimitr to limit the rate at which functions are called. A rate-limited function that allows <code>n</code> calls per <code>period</code> will never have a window of time of length <code>period</code> that includes more than <code>n</code> calls.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ratelimitr)
-f &lt;-<span class="st"> </span>function() <span class="ot">NULL</span>
+f &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="ot">NULL</span>
 
 <span class="co"># create a version of f that can only be called 10 times per second</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span class="kw">rate</span>(<span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">period =</span> <span class="dv">1</span>))
@@ -93,48 +93,48 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <span class="co"># time without limiting</span>
 <span class="kw">system.time</span>(<span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f</span>()))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.01    0.00    0.02</code></pre>
+##   0.001   0.000   0.001</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># time with limiting</span>
 <span class="kw">system.time</span>(<span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.01    0.00    1.06</code></pre>
+##   0.006   0.000   1.028</code></pre>
 </div>
 <div id="multiple-rates" class="section level2">
 <h2>Multiple rates</h2>
 <p>Published rate limits often have multiple types of limits. Here is an example of limiting a function so that it never evaluates more than 10 times per .1 seconds, but additionally never evaluates more than 50 times per 1 second.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(
     f, 
-    <span class="kw">rate</span>(<span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">period =</span> .<span class="dv">1</span>), 
+    <span class="kw">rate</span>(<span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">period =</span> <span class="fl">.1</span>), 
     <span class="kw">rate</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">period =</span> <span class="dv">1</span>)
 )
 
 <span class="co"># 10 calls do not trigger the rate limit</span>
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">10</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##       0       0       0</code></pre>
+##   0.001   0.000   0.000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># note that reset does not modify its argument, but returns a new</span>
 <span class="co"># rate-limited function with a fresh timer</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.00    0.00    0.14</code></pre>
+##   0.002   0.000   0.142</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># similarly, 50 calls don't trigger the second rate limit</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">50</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.02    0.00    0.55</code></pre>
+##   0.014   0.001   0.553</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># but 51 calls do:</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">51</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.00    0.00    1.04</code></pre>
+##   0.013   0.000   1.035</code></pre>
 </div>
 <div id="multiple-functions-sharing-one-or-more-rate-limits" class="section level2">
 <h2>Multiple functions sharing one (or more) rate limit(s)</h2>
 <p>To limit a group of functions together, just pass <code>limit_rate</code> a list of functions instead of a single function. Make sure the list is named, the names will be how you access the rate-limited versions of the functions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span>function() <span class="st">&quot;f&quot;</span>
-g &lt;-<span class="st"> </span>function() <span class="st">&quot;g&quot;</span>
-h &lt;-<span class="st"> </span>function() <span class="st">&quot;h&quot;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="st">&quot;f&quot;</span>
+g &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="st">&quot;g&quot;</span>
+h &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="st">&quot;h&quot;</span>
 
 <span class="co"># passing a named list to limit_rate</span>
 limited &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(
@@ -143,28 +143,28 @@ limited &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(
 )
 
 <span class="co"># now limited is a list of functions that share a rate limit. examples:</span>
-limited$<span class="kw">f</span>()</code></pre></div>
+limited<span class="op">$</span><span class="kw">f</span>()</code></pre></div>
 <pre><code>## [1] &quot;f&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">limited$<span class="kw">g</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">limited<span class="op">$</span><span class="kw">g</span>()</code></pre></div>
 <pre><code>## [1] &quot;g&quot;</code></pre>
 <p>The new functions are subject to a single rate limit, regardless of which ones are called or in what order they are called.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the first three function calls should not trigger a delay</span>
 <span class="kw">system.time</span>(
-    {limited$<span class="kw">f</span>(); limited$<span class="kw">g</span>(); limited$<span class="kw">h</span>()}
+    {limited<span class="op">$</span><span class="kw">f</span>(); limited<span class="op">$</span><span class="kw">g</span>(); limited<span class="op">$</span><span class="kw">h</span>()}
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##       0       0       0</code></pre>
+##   0.001   0.000   0.001</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">limited &lt;-<span class="st"> </span><span class="kw">reset</span>(limited)
 
 <span class="co"># but to evaluate a fourth function call, there will be a delay</span>
 <span class="kw">system.time</span>({
-    limited$<span class="kw">f</span>()
-    limited$<span class="kw">g</span>() 
-    limited$<span class="kw">h</span>() 
-    limited$<span class="kw">f</span>()
+    limited<span class="op">$</span><span class="kw">f</span>()
+    limited<span class="op">$</span><span class="kw">g</span>() 
+    limited<span class="op">$</span><span class="kw">h</span>() 
+    limited<span class="op">$</span><span class="kw">f</span>()
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.01    0.00    1.03</code></pre>
+##   0.001   0.000   1.039</code></pre>
 </div>
 
 
