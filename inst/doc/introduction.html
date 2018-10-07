@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tarak Shah" />
 
-<meta name="date" content="2018-08-28" />
+<meta name="date" content="2018-10-07" />
 
 <title>Introduction to ratelimitr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to ratelimitr</h1>
 <h4 class="author"><em>Tarak Shah</em></h4>
-<h4 class="date"><em>2018-08-28</em></h4>
+<h4 class="date"><em>2018-10-07</em></h4>
 
 
 <div id="TOC">
@@ -97,7 +97,7 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># time with limiting</span>
 <span class="kw">system.time</span>(<span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.006   0.000   1.028</code></pre>
+##   0.007   0.000   1.029</code></pre>
 </div>
 <div id="multiple-rates" class="section level2">
 <h2>Multiple rates</h2>
@@ -111,23 +111,23 @@ f_lim &lt;-<span class="st"> </span><span class="kw">limit_rate</span>(f, <span 
 <span class="co"># 10 calls do not trigger the rate limit</span>
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">10</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.001   0.000   0.000</code></pre>
+##   0.001   0.000   0.001</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># note that reset does not modify its argument, but returns a new</span>
 <span class="co"># rate-limited function with a fresh timer</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">11</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.002   0.000   0.142</code></pre>
+##   0.002   0.000   0.158</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># similarly, 50 calls don't trigger the second rate limit</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">50</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.014   0.001   0.553</code></pre>
+##   0.012   0.000   0.560</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># but 51 calls do:</span>
 f_lim &lt;-<span class="st"> </span><span class="kw">reset</span>(f_lim)
 <span class="kw">system.time</span>( <span class="kw">replicate</span>(<span class="dv">51</span>, <span class="kw">f_lim</span>()) )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.013   0.000   1.035</code></pre>
+##   0.013   0.002   1.053</code></pre>
 </div>
 <div id="multiple-functions-sharing-one-or-more-rate-limits" class="section level2">
 <h2>Multiple functions sharing one (or more) rate limit(s)</h2>
@@ -164,7 +164,7 @@ limited<span class="op">$</span><span class="kw">f</span>()</code></pre></div>
     limited<span class="op">$</span><span class="kw">f</span>()
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.001   0.000   1.039</code></pre>
+##   0.001   0.000   1.059</code></pre>
 </div>
 
 

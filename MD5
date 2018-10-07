@@ -1,7 +1,7 @@
-4a375ee687c1c264c870aef8c0ba444e *DESCRIPTION
+0f5c95f4a87c201f0a48a6ec9d20d817 *DESCRIPTION
 0dcc72e8b8541d0518394b9f2530d10f *LICENSE
 1688e630ef73244ff193f7e597314694 *NAMESPACE
-83127964c4861ee495751782e794cc7c *NEWS.md
+42910f569b97a717df0acd5b2dda2b6c *NEWS.md
 541e46a7571d99f2b5dd3235393ed768 *R/accessors.R
 bb65ad69b08350b6bdeeee0dd2dfe067 *R/fixed_queue.R
 36de8d3f1a0eb01a51ace632954c4965 *R/function-list.R
@@ -13,10 +13,10 @@ faf609833ba4f25636a1c136fd71f447 *R/reset.R
 1c77f46168d48f44c725a01c74087d65 *R/token-dispenser.R
 f2b0aa4c4b64609fcc137c9efa49ce45 *R/update-rate.R
 a251a193214cc57bfeed7aade4967b78 *README.md
-ba2148a66aab852fe0bdb7715df41063 *build/vignette.rds
+ccf9a542cefe0d71d1ea80dda2f87e9a *build/vignette.rds
 02661d7ddabac849e02781005fcc6ba9 *inst/doc/introduction.R
 4a31389e8d86f777d9b914e2afecd46b *inst/doc/introduction.Rmd
-e72dc466a0fbf360f3d2a59238957392 *inst/doc/introduction.html
+34e0bd6572f15e38e6d41614c3fdfbea *inst/doc/introduction.html
 72244ed691ace8b634584a1a2c54b4a8 *man/UPDATE_RATE.Rd
 442fc9cb9e7fdc9402314546155ea786 *man/get_function.Rd
 e8c1171ceec7e12fe10ecca8b9e0a6e7 *man/get_precision.Rd
